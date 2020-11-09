@@ -48,7 +48,7 @@ func (s *CmdExecutor) DeviceSetup(host, device, vgid string, destroy bool) (d *e
 	}
 	//commands = append(commands, fmt.Sprintf("%s pvcreate -qq --metadatasize=128M --dataalignment=%v '%v'", s.lvmCommand(), s.PVDataAlignment(), device))
 	// add mdadm raid support
-	commands = append(commands, fmt.Sprintf("%s pvcreate -qq --metadatasize=128M --dataalignment==$(( $(blkid -i %v | grep MINIMUM_IO_SIZE | cut -d= -f2) < 262144 ? 262144 : $(blkid -i %v | grep MINIMUM_IO_SIZE | cut -d= -f2) )) '%v'", s.lvmCommand(), device, device, device))
+	commands = append(commands, fmt.Sprintf("%s pvcreate -qq --metadatasize=128M --dataalignment=$(( $(blkid -i %v | grep MINIMUM_IO_SIZE | cut -d= -f2) < 262144 ? 262144 : $(blkid -i %v | grep MINIMUM_IO_SIZE | cut -d= -f2) )) '%v'", s.lvmCommand(), device, device, device))
 	commands = append(commands, fmt.Sprintf("%s vgcreate -qq --physicalextentsize=%v --autobackup=%v %v %v",
 		s.lvmCommand(),
 
